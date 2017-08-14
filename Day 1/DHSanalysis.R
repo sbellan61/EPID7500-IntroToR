@@ -6,6 +6,7 @@ getwd()
 ls()
 ## Hiding this from them
 load(url('https://github.com/sbellan61/Bellan-2013-Lancet-DHS-analysis-/raw/master/alldhs.Rdata'))
+dhs <- as.tibble(dat)
 dhs <- mutate(dhs, mpos = as.numeric(ser %in% 1:2), fpos = as.numeric(ser %in% c(1,3))) %>%
     select(uid, ds, group, mpos, fpos, ser, tms, tfs, tmar, tint, mage, fage, mlsp, flsp,
            mevtest, fevtest) %>%
@@ -28,18 +29,6 @@ str(dhs)
 ##################################################
 ## DHS Questionnaire
 ## http://dhsprogram.com/publications/publication-dhsq6-dhs-questionnaires-and-manuals.cfm
-## Variable Names ####################
-## uid: user id
-## ds: data set
-## ser: serostatus (1 --, 2 m+f-, 3m-f+, 4++)
-## tms/tfs: male/female month of first sex (months since 1990)
-## tmar: month of marriage (months since 1990)
-## tint: month of interview (months since 1990)
-## mardur.mon: marital duration in months
-## circ: male circumscision status
-## mage/fage: male/female age at interview date
-## m/flsp: lifetime sexual partners
-## m/fevtest: ever tested for hiv
 ##################################################
 
 
