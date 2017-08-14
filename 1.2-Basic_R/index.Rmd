@@ -1,11 +1,11 @@
 ---
-title: "Variables: Objects in R"
-author: "Introduction to R for Public Health Researchers"
+title: "Basic R Functionality"
+author: "Steve Bellan (slides altered from John Muschelli)"
 output:
   ioslides_presentation:
     css: ../styles.css
     widescreen: yes
-subtitle: Basic R Functionality
+subtitle: EPID 7500
 ---
 
 ```{r, echo = FALSE}
@@ -16,7 +16,7 @@ opts_chunk$set(comment = "")
 ## Common new users frustations
 
 1.  **Different versions of software**
-1.  **Data type problems (is that a string or a number?)**
+1.  **Data type problems (is that a string, number, or factor?)**
 2.  Working directory problems: trying to read files that R "can't find"
     - RStudio can help, and so do RStudio Projects
     - discuss in Data Input/Output lecture
@@ -39,11 +39,11 @@ Add a comment header to day1.R :`#` is the comment symbol
 ```{r}
 #################
 # Title: Demo R Script
-# Author: John Muschelli
+# Author: Steve Bellan
 # Purpose: Demonstrate comments in R
 ###################
  
-# nothing to its right is evaluated
+# nothing to the right of the symbol is evaluated by R
 
 # this # is still a comment
 ### you can use many #'s as you want
@@ -73,6 +73,8 @@ So `print("I'm code")` is the code chunk and [1] "I'm code" is the output.
 ```
 
 Note, when you type your command, R inherently thinks you want to print the result. 
+
+For now, let's ignore the [1]. We'll return back to why R prints this in front of each object it prints later on.
 
 ## R as a calculator
 
@@ -136,7 +138,7 @@ Try assigning your full name to an R variable called `name`
 Try assigning your full name to an R variable called `name`
 
 ```{r myName}
-name = "John Muschelli"
+name = "Steve Bellan"
 name
 ```
 
@@ -145,7 +147,7 @@ name
 The function `c()` collects/combines/joins single R objects into a vector of R objects. It is mostly used for creating vectors of numbers, character strings, and other data types. 
 
 ```{r assign3a}
-x <- c(1, 4, 6, 8)
+x <- c(1, 4, 6, 8, 1, 1, 3, 4)
 x
 class(x)
 ```
@@ -159,7 +161,7 @@ Try assigning your first and last name as 2 separate character strings into a si
 Try assigning your first and last name as 2 separate character strings into a length-2 vector called `name2`
 
 ```{r myName2}
-name2 = c("John","Muschelli")
+name2 = c("Steve","Bellan")
 name2
 ```
 
@@ -204,6 +206,8 @@ x + c(1, 2, 3, 4)
 
 But things like algebra can only be performed on numbers.
 
+Learn to read R's Errors and Warnings. They will help you debug code.
+
 ```
 > name2 + 4
 [1] Error in name2 + 4 : non-numeric argument
@@ -240,4 +244,7 @@ This tells you that `x` is a numeric vector and tells you the length.
 
 ## Website
 
-[Website](../index.html)
+[EPID 7500 Course Website](bellanlab.uga.edu/index.php/epid-7500/)
+
+John Muschelli's [Course](http://johnmuschelli.com/intro_to_r/) at Johns Hopkins & [github repository](https://github.com/muschellij2/intro_to_r)
+

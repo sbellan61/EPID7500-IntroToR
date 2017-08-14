@@ -5,11 +5,11 @@ opts_chunk$set(comment = "")
 ## ------------------------------------------------------------------------
 #################
 # Title: Demo R Script
-# Author: John Muschelli
+# Author: Steve Bellan
 # Purpose: Demonstrate comments in R
 ###################
  
-# nothing to its right is evaluated
+# nothing to the right of the symbol is evaluated by R
 
 # this # is still a comment
 ### you can use many #'s as you want
@@ -44,16 +44,16 @@ print(y)
 class(y)
 
 ## ----myName--------------------------------------------------------------
-name = "John Muschelli"
+name = "Steve Bellan"
 name
 
 ## ----assign3a------------------------------------------------------------
-x <- c(1, 4, 6, 8)
+x <- c(1, 4, 6, 8, 1, 1, 3, 4)
 x
 class(x)
 
 ## ----myName2-------------------------------------------------------------
-name2 = c("John","Muschelli")
+name2 = c("Steve","Bellan")
 name2
 
 ## ----assign3b------------------------------------------------------------
