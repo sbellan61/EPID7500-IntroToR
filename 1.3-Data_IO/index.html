@@ -161,12 +161,19 @@ setwd(&#39;~/Documents/R Repos/EPID7500/&#39;)</pre>
 
 <pre class = 'prettyprint lang-r'>dir() # shows directory contents</pre>
 
-<pre > [1] &quot;Data_IO.html&quot;              &quot;Data_IO.pdf&quot;              
- [3] &quot;Data_IO.R&quot;                 &quot;index.html&quot;               
- [5] &quot;index.pdf&quot;                 &quot;index.R&quot;                  
- [7] &quot;index.Rmd&quot;                 &quot;lab&quot;                      
- [9] &quot;makefile&quot;                  &quot;YouthTobacco_newNames.csv&quot;
-[11] &quot;yts_dataset.rds&quot;          </pre>
+<pre > [1] &quot;Data_IO.html&quot;                     
+ [2] &quot;Data_IO.pdf&quot;                      
+ [3] &quot;Data_IO.R&quot;                        
+ [4] &quot;index.html&quot;                       
+ [5] &quot;index.pdf&quot;                        
+ [6] &quot;index.R&quot;                          
+ [7] &quot;index.Rmd&quot;                        
+ [8] &quot;lab&quot;                              
+ [9] &quot;makefile&quot;                         
+[10] &quot;Youth_Tobacco_Survey_YTS_Data.csv&quot;
+[11] &quot;YouthTobacco_newNames.csv&quot;        
+[12] &quot;yts_data.rda&quot;                     
+[13] &quot;yts_dataset.rds&quot;                  </pre>
 
 <pre class = 'prettyprint lang-r'>dir(&quot;..&quot;) # shows up one directory</pre>
 
@@ -249,7 +256,7 @@ setwd(&#39;~/Documents/R Repos/EPID7500/&#39;)</pre>
 
 <p>This means if I try your code, and you use absolute paths, it won&#39;t work unless we have the exact same folder structure where R is looking (bad).</p>
 
-<p>A <strong>relative path starts from some given working directory</strong>, avoiding the need to provide the full absolute path. Good for portability of projects.</p>
+<p>A <strong>relative path starts from current working directory</strong>. Need to have the working directory right but good for project portability.</p>
 
 <pre class = 'prettyprint lang-r'>dir(&#39;~/Documents&#39;, full.names = FALSE)[1:3]</pre>
 
@@ -277,57 +284,51 @@ setwd(&#39;~/Documents/R Repos/EPID7500/&#39;)</pre>
 </ul></li>
 </ol>
 
-</article></slide><slide class=''><hgroup><h2>Help</h2></hgroup><article  id="help">
+</article></slide><slide class=''><hgroup><h2>Reminder: Use R Help!</h2></hgroup><article  id="reminder-use-r-help">
 
 <p>For any function, you can write <code>?FUNCTION_NAME</code>, or <code>help(&quot;FUNCTION_NAME&quot;)</code> to look at the help file:</p>
 
 <pre class = 'prettyprint lang-r'>?dir
 help(&quot;dir&quot;)</pre>
 
-</article></slide><slide class=''><hgroup><h2>Data Aside</h2></hgroup><article  id="data-aside">
-
-<ul>
-<li>Everything we do in class will be using real publicly available data - there are few &#39;toy&#39; example datasets and &#39;simulated&#39; data</li>
-<li>OpenBaltimore and Data.gov will be sources for the first few days</li>
-</ul>
-
 </article></slide><slide class=''><hgroup><h2>Data Input</h2></hgroup><article  id="data-input">
 
 <ul>
+<li><p>Everything we do in class will be using real publicly available data - there are few &#39;toy&#39; example datasets and &#39;simulated&#39; data</p></li>
 <li>&#39;Reading in&#39; data is the first step of any real project/analysis</li>
-<li>R can read almost any file format, especially via add-on packages</li>
-<li>We are going to focus on simple delimited files first
+<li>R can read almost any file format</li>
+<li>Focus on
 
 <ul>
 <li>tab delimited (e.g. &#39;.txt&#39;)</li>
 <li>comma separated (e.g. &#39;.csv&#39;)</li>
-<li>Microsoft excel (e.g. &#39;.xlsx&#39;)</li>
+<li>Microsoft Excel (e.g. &#39;.xlsx&#39;)</li>
 </ul></li>
 </ul>
 
 </article></slide><slide class=''><hgroup><h2>Data Input</h2></hgroup><article  id="data-input-1">
 
-<p>Youth Tobacco Survey (YTS) Dataset:</p>
-
-<p>&quot;The YTS was developed to provide states with comprehensive data on both middle school and high school students regarding tobacco use, exposure to environmental tobacco smoke, smoking cessation, school curriculum, minors&#39; ability to purchase or otherwise obtain tobacco products, knowledge and attitudes about tobacco, and familiarity with pro-tobacco and anti-tobacco media messages.&quot;</p>
+<p><a href='https://catalog.data.gov/dataset/youth-tobacco-survey-yts-data' title=''>Youth Tobacco Survey (YTS) Dataset</a></p>
 
 <ul>
-<li><p>Check out the data at: <a href='https://catalog.data.gov/dataset/youth-tobacco-survey-yts-data' title=''>https://catalog.data.gov/dataset/youth-tobacco-survey-yts-data</a></p></li>
+<li><p>Middle/high school students tobacco use, exposure to environmental tobacco smoke, smoking cessation, school curriculum, knowledge and attitudes about tobacco, etc&#8230;</p></li>
 <li>Download the CSV file from the above site by clicking Download
 
 <ul>
-<li>Safari - if a file loads in your browser, choose File &#8211;&gt; Save As, select, Format &quot;Page Source&quot; and save</li>
+<li>If a file loads in your browser, choose File &#8211;&gt; Save As</li>
 </ul></li>
 <li><p>Within RStudio: Session &#8211;&gt; Set Working Directory &#8211;&gt; To Source File Location</p></li>
 </ul>
 
 </article></slide><slide class=''><hgroup><h2>Data Input</h2></hgroup><article  id="data-input-2">
 
-<p>R Studio features some nice &quot;drop down&quot; support, where you can run some tasks by selecting them from the toolbar.</p>
+<p>R Studio features</p>
 
-<p>For example, you can easily import text datasets using the &quot;File &#8211;&gt; Import Dataset &#8211;&gt; From CSV&quot; command. Selecting this will bring up a new screen that lets you specify the formatting of your text file.</p>
-
-<p>After importing a datatset, you get the corresponding R commands that you can enter in the console if you want to re-import data.</p>
+<ul>
+<li>&quot;File &#8211;&gt; Import Dataset &#8211;&gt; From CSV&quot; command.</li>
+<li>Specify the formatting of your text file.</li>
+<li>Shows you the corresponding R commands that did the import</li>
+</ul>
 
 </article></slide><slide class=''><hgroup><h2>Read in from the internet directly or from a downloaded copy</h2></hgroup><article  id="read-in-from-the-internet-directly-or-from-a-downloaded-copy">
 
@@ -335,11 +336,11 @@ help(&quot;dir&quot;)</pre>
 <li>Web</li>
 </ul>
 
-<pre class = 'prettyprint lang-r'>mydat = read_csv(&quot;https://github.com/sbellan61/EPID7500-IntroToR/raw/gh-pages/1.3-Data_IO/YouthTobacco_newNames.csv&quot;)
+<pre class = 'prettyprint lang-r'>mydat = read_csv(&quot;https://github.com/sbellan61/EPID7500-IntroToR/raw/gh-pages/1.3-Data_IO/Youth_Tobacco_Survey_YTS_Data.csv&quot;)
 head(mydat)</pre>
 
 <pre ># A tibble: 6 x 31
-   year LocationAbbr LocationDesc                 TopicType
+   YEAR LocationAbbr LocationDesc                 TopicType
   &lt;int&gt;        &lt;chr&gt;        &lt;chr&gt;                     &lt;chr&gt;
 1  2015           AZ      Arizona Tobacco Use – Survey Data
 2  2015           AZ      Arizona Tobacco Use – Survey Data
@@ -505,7 +506,7 @@ head(dat2)</pre>
 5        YTS05            5
 6        YTS06            6</pre>
 
-<p>We will use the <code>readr</code> functionality for certain reasons.</p>
+<p>We will use the TidyVerse <code>readr</code> functions because TidyVerse is the wave of the future.</p>
 
 </article></slide><slide class=''><hgroup><h2>Data Input</h2></hgroup><article  id="data-input-5">
 
@@ -573,76 +574,61 @@ names(dat)</pre>
 
 </article></slide><slide class=''><hgroup><h2>Data Output</h2></hgroup><article  id="data-output">
 
-<p>While its nice to be able to read in a variety of data formats, it&#39;s equally important to be able to output data somewhere.</p>
+<ul>
+<li>Writing data from R to a file</li>
+</ul>
 
-<p>There are also data exporting functions in the <code>readr</code> package, which have the pattern <code>write_*</code> like <code>write_csv</code> and <code>write_delim</code></p>
-
-<pre >write_delim(x, path, delim = &quot; &quot;, na = &quot;NA&quot;, append = FALSE,
-  col_names = !append)</pre>
+<pre >write_csv(dat, path, na = &quot;NA&quot;, append = FALSE) 
+?write_csv</pre>
 
 </article></slide><slide class=''><hgroup><h2>Data Output</h2></hgroup><article  id="data-output-1">
 
-<p><code>x</code>: the R <code>data.frame</code> or <code>matrix</code> you want to write</p>
+<p><code>x</code>: the R object (<code>tibble</code>) to write</p>
 
-<p><code>path</code>: the file name where you want to R object written. It can be an absolute path, or a filename (which writes the file to your working directory)</p>
-
-<p><code>delim</code>: what character separates the columns?</p>
-
-<ul>
-<li>&quot;,&quot; = .csv - Note there is also a <code>write_csv()</code> function</li>
-<li>&quot;&quot; = tab delimited</li>
-</ul>
+<p><code>path</code>: the file name (with absolute or, ideally, <em>relative</em> path)</p>
 
 </article></slide><slide class=''><hgroup><h2>Data Output</h2></hgroup><article  id="data-output-2">
 
-<p>There are similar packages in base R, like <code>write.table</code> and <code>write.csv</code> which have the general arguments, but are called different things. Note these functions do write out row names, which you can set to <code>FALSE</code>. I do this a lot since I often email these to collaborators who open them in Excel</p>
-
-</article></slide><slide class=''><hgroup><h2>Data Output</h2></hgroup><article  id="data-output-3">
-
-<p>For example, we can write back out the Youth Tobacco dataset with the new column name:</p>
+<ul>
+<li>Change name of 1st column &amp; write a new file</li>
+</ul>
 
 <pre class = 'prettyprint lang-r'>names(dat)[1] = &quot;Year&quot;
 write_csv(dat, path=&quot;YouthTobacco_newNames.csv&quot;)</pre>
 
 </article></slide><slide class=''><hgroup><h2>Data Input - Excel</h2></hgroup><article  id="data-input---excel">
 
-<p>Many data analysts collaborate with researchers who use Excel to enter and curate their data. Often times, this is the input data for an analysis. You therefore have two options for getting this data into R:</p>
+<p>Excel to R options</p>
 
 <ul>
-<li>Saving the Excel sheet as a .csv file, and using <code>read.csv()</code></li>
-<li>Using an add-on package, like <code>xlsx</code>, <code>readxl</code>, or <code>openxlsx</code></li>
+<li>Saving the Excel sheet as a .csv file, and using <code>read_csv()</code></li>
+<li>Using an add-on package, like <code>xlsx</code>, <code>openxlsx</code>, <code>readxl</code> (can handle multiple worksheets)</li>
 </ul>
 
-<p>For single worksheet .xlsx files, I often just save the spreadsheet as a .csv file (because I often have to strip off additional summary data from the columns)</p>
-
-<p>For an .xlsx file with multiple well-formated worksheets, I use the <code>readxl</code> package for reading in the data.</p>
-
-</article></slide><slide class=''><hgroup><h2>Data Input - Other Software</h2></hgroup><article  id="data-input---other-software">
+</article></slide><slide class=''><hgroup><h2>Data Input - R packages</h2></hgroup><article  id="data-input---r-packages">
 
 <ul>
-<li><strong>haven</strong> package (<a href='https://cran.r-project.org/web/packages/haven/index.html' title=''>https://cran.r-project.org/web/packages/haven/index.html</a>) reads in SAS, SPSS, Stata formats</li>
-<li><strong>readxl</strong> package - the <code>read_excel</code> function can read Excel sheets easily</li>
-<li><strong>readr</strong> package - Has <em>read_csv</em>/<em>write_csv</em> and <em>read_table</em> functions similar to <em>read.csv</em>/<em>write.csv</em> and <em>read.table</em>. Has different defaults, but can read <strong>much faster</strong> for very large data sets</li>
+<li><strong>baser</strong> read.csv, write.csv, etc&#8230;</li>
+<li><strong>readr</strong> - <em>read_csv</em>/<em>write_csv</em> similar to <em>read.csv</em>/<em>write.csv</em> but <strong>much faster</strong> for very large data sets &amp; makes tibbles</li>
+<li><a href='https://cran.r-project.org/web/packages/haven/index.html' title=''><strong>haven</strong></a> package reads in SAS, SPSS, Stata formats</li>
+<li><strong>readxl</strong> - <code>read_excel</code></li>
 <li><strong>sas7bdat</strong> reads .sas7bdat files</li>
-<li><strong>foreign</strong> package - can read all the formats as <strong>haven</strong>. Around longer (aka more testing), but not as maintained (bad for future).</li>
 </ul>
-
-<p>Some of these are now available in the RStudio dropdown list</p>
 
 </article></slide><slide class=''><hgroup><h2>More ways to save: save</h2></hgroup><article  id="more-ways-to-save-save">
 
-<p>The <code>save</code> command can save a set of R objects into an &quot;R data file&quot;, with the extension <code>.rda</code> or <code>.RData</code>.</p>
+<ul>
+<li><code>save</code> R object(s) into an &quot;R data file&quot;: <code>.rda</code> or <code>.RData</code></li>
+</ul>
 
-<pre class = 'prettyprint lang-r'>x = 5; # can have semicolons a the end!
+<pre class = 'prettyprint lang-r'>x &lt;- 5; # can have semicolons a the end!
 # calling read_csv function and pasting a long string together
-yts = readr::read_csv(
-  paste0(&quot;http://johnmuschelli.com/intro_to_r/&quot;,
-         &quot;data/Youth_Tobacco_Survey_YTS_Data.csv&quot;)) 
+yts &lt;- read_csv(&#39;../data/Youth_Tobacco_Survey_YTS_Data.csv&#39;)
 save(yts, x, file = &quot;yts_data.rda&quot;)</pre>
 
-</article></slide><slide class=''><hgroup><h2>More ways to save: load</h2></hgroup><article  id="more-ways-to-save-load">
+</article></slide><slide class=''><hgroup><h2>Loading R data files</h2></hgroup><article  id="loading-r-data-files">
 
-<p>The opposite of <code>save</code> is <code>load</code>. The <code>ls()</code> command lists the items in the workspace/environment and <code>rm</code> removes them:</p>
+<p><code>ls()</code> lists the items in the workspace/environment and <code>rm</code> removes them:</p>
 
 <pre class = 'prettyprint lang-r'>ls() # list things in the workspace</pre>
 
@@ -653,37 +639,19 @@ ls()</pre>
 
 <pre >[1] &quot;dat&quot;   &quot;dat2&quot;  &quot;mydat&quot;</pre>
 
-<pre class = 'prettyprint lang-r'>z = load(&quot;yts_data.rda&quot;)
+<pre class = 'prettyprint lang-r'>z &lt;- load(&quot;yts_data.rda&quot;)
 ls()</pre>
 
 <pre >[1] &quot;dat&quot;   &quot;dat2&quot;  &quot;mydat&quot; &quot;x&quot;     &quot;yts&quot;   &quot;z&quot;    </pre>
 
-</article></slide><slide class=''><hgroup><h2>More ways to save: load</h2></hgroup><article  id="more-ways-to-save-load-1">
+</article></slide><slide class=''><hgroup><h2>More ways to save: load</h2></hgroup><article  id="more-ways-to-save-load">
 
-<pre class = 'prettyprint lang-r'>print(z)</pre>
+<pre class = 'prettyprint lang-r'>z &lt;-  load(&quot;yts_data.rda&quot;)
+print(z)</pre>
 
 <pre >[1] &quot;yts&quot; &quot;x&quot;  </pre>
 
-<p>Note, <code>z</code> is a <strong>character vector</strong> of the <strong>names</strong> of the objects loaded, <strong>not</strong> the objects themselves.</p>
-
-</article></slide><slide class=''><hgroup><h2>More ways to save: saveRDS</h2></hgroup><article  id="more-ways-to-save-saverds">
-
-<p>If you want to save <strong>one</strong> object, you can use <code>saveRDS</code> to save to an <code>rds</code> file:</p>
-
-<pre class = 'prettyprint lang-r'>saveRDS(yts, file = &quot;yts_dataset.rds&quot;)</pre>
-
-</article></slide><slide class=''><hgroup><h2>More ways to save: readRDS</h2></hgroup><article  id="more-ways-to-save-readrds">
-
-<p>To read this back in to R, you need to use <code>readRDS</code>, but <strong>need to assign it</strong>:</p>
-
-<pre class = 'prettyprint lang-r'>yts2 = readRDS(file = &quot;yts_dataset.rds&quot;)
-identical(yts, yts2) # test if they are the same </pre>
-
-<pre >[1] TRUE</pre>
-
-</article></slide><slide class=''><hgroup><h2>Website</h2></hgroup><article  id="website">
-
-<p><a href='../index.html' title=''>Website</a></p></article></slide>
+<p>Note, <code>z</code> is a <strong>character vector</strong> of the <strong>names</strong> of the objects loaded, <strong>not</strong> the objects themselves.</p></article></slide>
 
 
   <slide class="backdrop"></slide>

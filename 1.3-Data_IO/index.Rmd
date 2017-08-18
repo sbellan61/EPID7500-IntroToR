@@ -203,25 +203,22 @@ names(dat)
 
 ## Data Output
 
-While its nice to be able to read in a variety of data formats, it's equally important to be able to output data somewhere.
-
-There are also data exporting functions in the `readr` package, which have the pattern `write_*` like `write_csv` and `write_delim`
+* Writing data from R to a file
 
 ```
-write_csv(x, path, na = "NA", append = FALSE, col_names = !append)
+write_csv(dat, path, na = "NA", append = FALSE) 
+?write_csv
 ```
 
 ## Data Output
 
-`x`: the R `data.frame` or `matrix` you want to write
+`x`: the R object (`tibble`) to write
 
-`path`: the file name where you want to R object written. It can be an absolute path, or a filename (which writes the file to your working directory)
-
-* you can also control other things like whether to print rownames (check out the helpfile!)
+`path`: the file name (with absolute or, ideally, *relative* path)
 
 ## Data Output
 
-For example, we can write back out the Youth Tobacco dataset with the new column name:
+* Change name of 1st column & write a new file
 
 ```{r writecsv,eval=FALSE}
 names(dat)[1] = "Year"
@@ -233,42 +230,35 @@ write_csv(dat, path="YouthTobacco_newNames.csv")
 Excel to R options
 
 * Saving the Excel sheet as a .csv file, and using `read_csv()`
-* Using an add-on package, like `xlsx`, `readxl`, or `openxlsx`
+* Using an add-on package, like `xlsx`, `openxlsx`, `readxl` (can handle multiple worksheets)
 
-For single worksheet .xlsx files, I often just save the spreadsheet as a .csv file (because I often have to strip off additional summary data from the columns)
+## Data Input -  R packages
 
-For an .xlsx file with multiple well-formated worksheets, I use the `readxl` package for reading in the data. 
-
-## Data Input - Other Software
-
-* **haven** package (https://cran.r-project.org/web/packages/haven/index.html) reads in SAS, SPSS, Stata formats
-* **readxl** package - the `read_excel` function can read Excel sheets easily
-* **readr** package - Has *read_csv*/*write_csv* and *read_table* functions similar to *read.csv*/*write.csv* and *read.table*.  Has different defaults, but can read **much faster** for very large data sets
+* **baser** read.csv, write.csv, etc...
+* **readr**  -  *read_csv*/*write_csv*  similar to *read.csv*/*write.csv* but  **much faster** for very large data sets & makes tibbles
+* [**haven**](https://cran.r-project.org/web/packages/haven/index.html) package reads in SAS, SPSS, Stata formats
+* **readxl**  -  `read_excel` 
 * **sas7bdat** reads .sas7bdat files
-* **foreign** package - can read all the formats as **haven**.  Around longer (aka more testing), but not as maintained (bad for future).
 
 ## More ways to save: save
 
-The `save` command can save a set of R objects into an "R data file", with the extension `.rda` or `.RData`.  
+* `save` R object(s) into an "R data file":  `.rda` or `.RData`
 
 ```{r, message = FALSE}
-x = 5; # can have semicolons a the end!
-# calling read_csv function and pasting a long string together
-yts = readr::read_csv(
-  paste0("http://johnmuschelli.com/intro_to_r/",
-         "data/Youth_Tobacco_Survey_YTS_Data.csv")) 
+x <- 5
+yts <- read_csv('../data/Youth_Tobacco_Survey_YTS_Data.csv')
 save(yts, x, file = "yts_data.rda")
 ```
 
-## More ways to save: load
+## Loading R data files
 
-The opposite of `save` is `load`.  The `ls()` command lists the items in the workspace/environment and `rm` removes them:
+`ls()`  lists the items in the workspace/environment and `rm` removes them:
 
 ```{r}
 ls() # list things in the workspace
 rm(list = c("x", "yts"))
 ls()
-z = load("yts_data.rda")
+z <- load("yts_data.rda")
 ls()
 ```
 
