@@ -133,7 +133,7 @@
 
 <pre class = 'prettyprint lang-r'>## get the working directory
 getwd()
-setwd(&quot;~/Lectures&quot;) </pre>
+setwd(&#39;~/Documents/R Repos/EPID7500/&#39;)</pre>
 
 </article></slide><slide class=''><hgroup><h2>Setting a Working Directory</h2></hgroup><article  id="setting-a-working-directory">
 
@@ -159,15 +159,16 @@ setwd(&quot;~/Lectures&quot;) </pre>
 
 <p>You can try some directory navigation:</p>
 
-<pre class = 'prettyprint lang-r'>dir(&quot;./&quot;) # shows directory contents</pre>
+<pre class = 'prettyprint lang-r'>dir() # shows directory contents</pre>
 
 <pre > [1] &quot;Data_IO.html&quot;              &quot;Data_IO.pdf&quot;              
  [3] &quot;Data_IO.R&quot;                 &quot;index.html&quot;               
- [5] &quot;index.R&quot;                   &quot;index.Rmd&quot;                
- [7] &quot;lab&quot;                       &quot;makefile&quot;                 
- [9] &quot;YouthTobacco_newNames.csv&quot; &quot;yts_dataset.rds&quot;          </pre>
+ [5] &quot;index.pdf&quot;                 &quot;index.R&quot;                  
+ [7] &quot;index.Rmd&quot;                 &quot;lab&quot;                      
+ [9] &quot;makefile&quot;                  &quot;YouthTobacco_newNames.csv&quot;
+[11] &quot;yts_dataset.rds&quot;          </pre>
 
-<pre class = 'prettyprint lang-r'>dir(&quot;..&quot;)</pre>
+<pre class = 'prettyprint lang-r'>dir(&quot;..&quot;) # shows up one directory</pre>
 
 <pre > [1] &quot;1.1-RStudio&quot;                             
  [2] &quot;1.2-Basic_R&quot;                             
@@ -223,13 +224,37 @@ setwd(&quot;~/Lectures&quot;) </pre>
 [52] &quot;Subsetting_Data_in_R&quot;                    
 [53] &quot;Syllabus-student.doc&quot;                    </pre>
 
+<pre class = 'prettyprint lang-r'>dir(&quot;../..&quot;) # shows up two directories</pre>
+
+<pre > [1] &quot;CarcCapRecap&quot;            &quot;cRCT_vs_iRCT&quot;           
+ [3] &quot;datasets&quot;                &quot;EbolaVaccSim&quot;           
+ [5] &quot;EPID7500&quot;                &quot;HIVClinicTanzMoH&quot;       
+ [7] &quot;ICI3D&quot;                   &quot;lmtacc&quot;                 
+ [9] &quot;MathModelsMedPH&quot;         &quot;measlesImmunomodulation&quot;
+[11] &quot;MMED2017&quot;                &quot;MMEDparticipants&quot;       
+[13] &quot;RakaiLatentHet&quot;          &quot;RTutorials&quot;             
+[15] &quot;SDPSimulations&quot;          &quot;sshfsTip.txt&quot;           
+[17] &quot;TB_MAC_UGA&quot;              &quot;untitled folder&quot;        
+[19] &quot;ZikaTrial&quot;              </pre>
+
 </article></slide><slide class=''><hgroup><h2>Relative vs. absolute paths (From Wiki)</h2></hgroup><article  id="relative-vs.-absolute-paths-from-wiki">
 
-<p><em>An <strong>absolute or full path</strong> points to the same location in a file system, regardless of the current working directory. To do that, it must include the root directory.</em></p>
+<p>An <strong>absolute or full path</strong> points to the same location in a file system, regardless of the current working directory.</p>
+
+<pre class = 'prettyprint lang-r'>dir(&#39;~/Documents&#39;, full.names = TRUE)[1:3]</pre>
+
+<pre >[1] &quot;/Users/stevenbellan/Documents/Adobe&quot;                    
+[2] &quot;/Users/stevenbellan/Documents/Dragon&quot;                   
+[3] &quot;/Users/stevenbellan/Documents/DreamPlan Sample Projects&quot;</pre>
 
 <p>This means if I try your code, and you use absolute paths, it won&#39;t work unless we have the exact same folder structure where R is looking (bad).</p>
 
-<p><em>By contrast, a <strong>relative path starts from some given working directory</strong>, avoiding the need to provide the full absolute path. A filename can be considered as a relative path based at the current working directory. </em></p>
+<p>A <strong>relative path starts from some given working directory</strong>, avoiding the need to provide the full absolute path. Good for portability of projects.</p>
+
+<pre class = 'prettyprint lang-r'>dir(&#39;~/Documents&#39;, full.names = FALSE)[1:3]</pre>
+
+<pre >[1] &quot;Adobe&quot;                     &quot;Dragon&quot;                   
+[3] &quot;DreamPlan Sample Projects&quot;</pre>
 
 </article></slide><slide class=''><hgroup><h2>Setting the Working Directory</h2></hgroup><article  id="setting-the-working-directory">
 
@@ -248,7 +273,7 @@ setwd(&quot;~/Lectures&quot;) </pre>
 
 <ul>
 <li>Mac - right click &#8211;&gt; Get Info &#8211;&gt; Open With: RStudio &#8211;&gt; Change All</li>
-<li>Windows - Andrew will show</li>
+<li><a href='https://support.microsoft.com/en-us/help/18539/windows-7-change-default-programs' title=''>Windows 7</a> and <a href='https://www.cnet.com/how-to/how-to-set-default-programs-in-windows-10/' title=''>Windows 10</a></li>
 </ul></li>
 </ol>
 
@@ -287,21 +312,16 @@ help(&quot;dir&quot;)</pre>
 <p>&quot;The YTS was developed to provide states with comprehensive data on both middle school and high school students regarding tobacco use, exposure to environmental tobacco smoke, smoking cessation, school curriculum, minors&#39; ability to purchase or otherwise obtain tobacco products, knowledge and attitudes about tobacco, and familiarity with pro-tobacco and anti-tobacco media messages.&quot;</p>
 
 <ul>
-<li>Check out the data at: <a href='https://catalog.data.gov/dataset/youth-tobacco-survey-yts-data' title=''>https://catalog.data.gov/dataset/youth-tobacco-survey-yts-data</a></li>
-</ul>
-
-</article></slide><slide class=''><hgroup><h2>Data Input</h2></hgroup><article  id="data-input-2">
-
-<ul>
-<li>Download data from <a href='http://johnmuschelli.com/intro_to_r/data/Youth_Tobacco_Survey_YTS_Data.csv' title=''>http://johnmuschelli.com/intro_to_r/data/Youth_Tobacco_Survey_YTS_Data.csv</a>
+<li><p>Check out the data at: <a href='https://catalog.data.gov/dataset/youth-tobacco-survey-yts-data' title=''>https://catalog.data.gov/dataset/youth-tobacco-survey-yts-data</a></p></li>
+<li>Download the CSV file from the above site by clicking Download
 
 <ul>
 <li>Safari - if a file loads in your browser, choose File &#8211;&gt; Save As, select, Format &quot;Page Source&quot; and save</li>
 </ul></li>
-<li>Within RStudio: Session &#8211;&gt; Set Working Directory &#8211;&gt; To Source File Location</li>
+<li><p>Within RStudio: Session &#8211;&gt; Set Working Directory &#8211;&gt; To Source File Location</p></li>
 </ul>
 
-</article></slide><slide class=''><hgroup><h2>Data Input</h2></hgroup><article  id="data-input-3">
+</article></slide><slide class=''><hgroup><h2>Data Input</h2></hgroup><article  id="data-input-2">
 
 <p>R Studio features some nice &quot;drop down&quot; support, where you can run some tasks by selecting them from the toolbar.</p>
 
@@ -309,13 +329,17 @@ help(&quot;dir&quot;)</pre>
 
 <p>After importing a datatset, you get the corresponding R commands that you can enter in the console if you want to re-import data.</p>
 
-</article></slide><slide class=''><hgroup><h2>Read in Directly</h2></hgroup><article  id="read-in-directly">
+</article></slide><slide class=''><hgroup><h2>Read in from the internet directly or from a downloaded copy</h2></hgroup><article  id="read-in-from-the-internet-directly-or-from-a-downloaded-copy">
 
-<pre class = 'prettyprint lang-r'>mydat = read_csv(&quot;http://johnmuschelli.com/intro_to_r/data/Youth_Tobacco_Survey_YTS_Data.csv&quot;)
+<ul>
+<li>Web</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>mydat = read_csv(&quot;https://github.com/sbellan61/EPID7500-IntroToR/raw/gh-pages/1.3-Data_IO/YouthTobacco_newNames.csv&quot;)
 head(mydat)</pre>
 
 <pre ># A tibble: 6 x 31
-   YEAR LocationAbbr LocationDesc                 TopicType
+   year LocationAbbr LocationDesc                 TopicType
   &lt;int&gt;        &lt;chr&gt;        &lt;chr&gt;                     &lt;chr&gt;
 1  2015           AZ      Arizona Tobacco Use – Survey Data
 2  2015           AZ      Arizona Tobacco Use – Survey Data
@@ -335,51 +359,8 @@ head(mydat)</pre>
 #   StratificationID3 &lt;chr&gt;, StratificationID4 &lt;chr&gt;, SubMeasureID &lt;chr&gt;,
 #   DisplayOrder &lt;int&gt;</pre>
 
-</article></slide><slide class=''><hgroup><h2>Data Input</h2></hgroup><article  id="data-input-4">
-
-<p>So what is going on &quot;behind the scenes&quot;?</p>
-
-<p><code>read_delim()</code>: Read a delimited file into a data frame.</p>
-
-<pre >read_delim(file, delim, quote = &quot;\&quot;&quot;, escape_backslash = FALSE,
-  escape_double = TRUE, col_names = TRUE, col_types = NULL,
-  locale = default_locale(), na = c(&quot;&quot;, &quot;NA&quot;), quoted_na = TRUE,
-  comment = &quot;&quot;, trim_ws = FALSE, skip = 0, n_max = Inf,
-  guess_max = min(1000, n_max), progress = interactive())
-           
-# for example: `read_delim(&quot;file.txt&quot;,delim=&quot;\t&quot;)`</pre>
-
-</article></slide><slide class=''><hgroup><h2>Data Input</h2></hgroup><article  id="data-input-5">
-
 <ul>
-<li>The filename is the path to your file, in quotes</li>
-<li>The function will look in your &quot;working directory&quot; if no absolute file path is given</li>
-<li>Note that the filename can also be a path to a file on a website (e.g. &#39;www.someurl.com/table1.txt&#39;)</li>
-</ul>
-
-</article></slide><slide class=''><hgroup><h2>Data Input</h2></hgroup><article  id="data-input-6">
-
-<p>There is another convenient function for reading in CSV files, where the delimiter is assumed to be a comma:</p>
-
-<pre class = 'prettyprint lang-r'>read_csv</pre>
-
-<pre >function (file, col_names = TRUE, col_types = NULL, locale = default_locale(), 
-    na = c(&quot;&quot;, &quot;NA&quot;), quoted_na = TRUE, quote = &quot;\\&quot;&quot;, comment = &quot;&quot;, 
-    trim_ws = TRUE, skip = 0, n_max = Inf, guess_max = min(1000, 
-        n_max), progress = show_progress()) 
-{
-    tokenizer &lt;- tokenizer_csv(na = na, quoted_na = TRUE, quote = quote, 
-        comment = comment, trim_ws = trim_ws)
-    read_delimited(file, tokenizer, col_names = col_names, col_types = col_types, 
-        locale = locale, skip = skip, comment = comment, n_max = n_max, 
-        guess_max = guess_max, progress = progress)
-}
-&lt;environment: namespace:readr&gt;</pre>
-
-</article></slide><slide class=''><hgroup><h2>Data Input</h2></hgroup><article  id="data-input-7">
-
-<ul>
-<li>Here would be reading in the data from the command line, specifying the file path:</li>
+<li>File</li>
 </ul>
 
 <pre class = 'prettyprint lang-r'>dat = read_csv(&quot;../data/Youth_Tobacco_Survey_YTS_Data.csv&quot;)</pre>
@@ -400,45 +381,15 @@ cols(
 
 <p>The data is now successfully read into your R workspace, just like from using the dropdown menu.</p>
 
-</article></slide><slide class=''><hgroup><h2>Data Input</h2></hgroup><article  id="data-input-8">
-
-<p>The <code>read_delim()</code> and related functions returns a &quot;tibble&quot; is a <code>data.frame</code> with special printing, which is the primary data format for most data cleaning and analyses.</p>
-
-</article></slide><slide class=''><hgroup><h2>Data Input with <code>tbl_df</code>s</h2></hgroup><article  id="data-input-with-tbl_dfs" class="smaller">
+</article></slide><slide class=''><hgroup><h2>Base R vs tidyverse</h2></hgroup><article  id="base-r-vs-tidyverse">
 
 <ul>
-<li>When using the dropdown menu in RStudio, it uses <code>read_csv</code>, which is an improved version of reading in CSVs. It is popular but <code>read.csv</code> is still largely used. It returns a <code>tbl</code> (tibble), that is a <code>data.frame</code> with improved printing and subsetting properties:</li>
+<li>Base R (loads as a data.frame): read.csv, read.table, read.delim</li>
+<li><p>TidyVerse (loads as a tibble): read_csv, read_table, read_delim</p></li>
+<li><p><a href='http://r4ds.had.co.nz/tibbles.html' title=''>tibbles</a> print cleaner and have slightly different subsetting syntax</p></li>
 </ul>
 
-<pre class = 'prettyprint lang-r'>library(readr)
-head(dat)</pre>
-
-<pre ># A tibble: 6 x 31
-   YEAR LocationAbbr LocationDesc                 TopicType
-  &lt;int&gt;        &lt;chr&gt;        &lt;chr&gt;                     &lt;chr&gt;
-1  2015           AZ      Arizona Tobacco Use – Survey Data
-2  2015           AZ      Arizona Tobacco Use – Survey Data
-3  2015           AZ      Arizona Tobacco Use – Survey Data
-4  2015           AZ      Arizona Tobacco Use – Survey Data
-5  2015           AZ      Arizona Tobacco Use – Survey Data
-6  2015           AZ      Arizona Tobacco Use – Survey Data
-# ... with 27 more variables: TopicDesc &lt;chr&gt;, MeasureDesc &lt;chr&gt;,
-#   DataSource &lt;chr&gt;, Response &lt;chr&gt;, Data_Value_Unit &lt;chr&gt;,
-#   Data_Value_Type &lt;chr&gt;, Data_Value &lt;dbl&gt;,
-#   Data_Value_Footnote_Symbol &lt;chr&gt;, Data_Value_Footnote &lt;chr&gt;,
-#   Data_Value_Std_Err &lt;dbl&gt;, Low_Confidence_Limit &lt;dbl&gt;,
-#   High_Confidence_Limit &lt;dbl&gt;, Sample_Size &lt;int&gt;, Gender &lt;chr&gt;,
-#   Race &lt;chr&gt;, Age &lt;chr&gt;, Education &lt;chr&gt;, GeoLocation &lt;chr&gt;,
-#   TopicTypeId &lt;chr&gt;, TopicId &lt;chr&gt;, MeasureId &lt;chr&gt;,
-#   StratificationID1 &lt;chr&gt;, StratificationID2 &lt;chr&gt;,
-#   StratificationID3 &lt;chr&gt;, StratificationID4 &lt;chr&gt;, SubMeasureID &lt;chr&gt;,
-#   DisplayOrder &lt;int&gt;</pre>
-
-<pre class = 'prettyprint lang-r'>class(dat)</pre>
-
-<pre >[1] &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</pre>
-
-</article></slide><slide class=''><hgroup><h2>Data Input</h2></hgroup><article  id="data-input-9">
+</article></slide><slide class=''><hgroup><h2>Data Input</h2></hgroup><article  id="data-input-3">
 
 <pre class = 'prettyprint lang-r'>dat</pre>
 
@@ -467,17 +418,9 @@ head(dat)</pre>
 #   StratificationID3 &lt;chr&gt;, StratificationID4 &lt;chr&gt;, SubMeasureID &lt;chr&gt;,
 #   DisplayOrder &lt;int&gt;</pre>
 
-</article></slide><slide class=''><hgroup><h2>Data Input</h2></hgroup><article  id="data-input-10">
+<p>While many online resources use the base R tools, the latest version of RStudio switched to use these new <code>readr</code> data import tools, so we will use them in the class for slides. They are also up to two times faster for reading in large datasets, and have a progress bar which is nice.</p>
 
-<p>There are also data importing functions provided in base R (rather than the <code>readr</code> package), like <code>read.delim</code> and <code>read.csv</code>.</p>
-
-<p>These functions have slightly different syntax for reading in data, like <code>header</code> and <code>as.is</code>.</p>
-
-<p>However, while many online resources use the base R tools, the latest version of RStudio switched to use these new <code>readr</code> data import tools, so we will use them in the class for slides. They are also up to two times faster for reading in large datasets, and have a progress bar which is nice.</p>
-
-<p>But you can use whatever function you feel more comfortable with.</p>
-
-</article></slide><slide class=''><hgroup><h2>Data Input</h2></hgroup><article  id="data-input-11">
+</article></slide><slide class=''><hgroup><h2>Data Input</h2></hgroup><article  id="data-input-4">
 
 <p>Here is how to read in the same dataset using base R functionality, which returns a <code>data.frame</code> directly</p>
 
@@ -564,7 +507,7 @@ head(dat2)</pre>
 
 <p>We will use the <code>readr</code> functionality for certain reasons.</p>
 
-</article></slide><slide class=''><hgroup><h2>Data Input</h2></hgroup><article  id="data-input-12">
+</article></slide><slide class=''><hgroup><h2>Data Input</h2></hgroup><article  id="data-input-5">
 
 <ul>
 <li><code>nrow()</code> displays the number of rows of a data frame</li>
@@ -604,7 +547,7 @@ head(dat2)</pre>
 [29] &quot;StratificationID4&quot;          &quot;SubMeasureID&quot;              
 [31] &quot;DisplayOrder&quot;              </pre>
 
-</article></slide><slide class=''><hgroup><h2>Data Input</h2></hgroup><article  id="data-input-13">
+</article></slide><slide class=''><hgroup><h2>Data Input</h2></hgroup><article  id="data-input-6">
 
 <p>Changing variable names in <code>data.frame</code>s works using the <code>names()</code> function, which is analagous to <code>colnames()</code> for data frames (they can be used interchangeably)</p>
 

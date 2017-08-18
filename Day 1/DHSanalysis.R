@@ -9,7 +9,7 @@ load(url('https://github.com/sbellan61/EPID7500-IntroToR/raw/gh-pages/Day%201/al
 ls() ## now an object does exist, it's called dhs
 
 dhs ## we can see some of that object
-str(dhs) ## let's look at the object summary
+str(dhs) ## let's look at a summary of the object
 ##################################################
 ## Have a look at the DHS Questionnaire
 ## http://dhsprogram.com/publications/publication-dhsq6-dhs-questionnaires-and-manuals.cfm
