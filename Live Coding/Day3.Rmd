@@ -1,0 +1,91 @@
+---
+title: "Title"
+date: Today
+output: html_document
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load the necessary packages
+
+Note that to enter a code segment we can do `Ctrl-Alt-i` (Windows) or  `Cmd-Alt-i` (Mac)
+```{r message=F}
+require(tidyverse)
+```
+
+## Knitting
+
+* Use keyboard shortcuts to knit whenever you want
+* `Ctrl-Shift-k` (Windows) or `Cmd-Shift-k` (Mac)
+
+## Loading in a data set from the internet
+
+* [WHO TB notification data provided by countries](http://www.who.int/tb/country/data/download/en/)
+* Right click on `Download case notifications [1.9Mb]` and save it to your hard drive
+* Cannot load directly from internet since no URL for the CSV file available
+* [WHO Data Dictionary](https://extranet.who.int/tme/generateCSV.asp?ds=dictionary)
+
+
+## Workflow for running R code within Rmd
+
+* I prefer to be able to use Console
+* Set R output to console (not inline) when running lines [see here](https://support.rstudio.com/hc/en-us/community/posts/115000797947-Global-Changes-show-chunk-output-in-console-not-execute-all-lines)
+
+## Select just a few variables of interest
+
+
+## Missing values
+
+
+* Excercise: Repeat this but look at rows with 0 values
+
+## Identify countries without missing rows
+
+## Subsetting
+
+* Select the data set for which there are no NAs
+
+## Excercises
+
+1. Write code that spreads `notif3` so that each country has it's own column
+1. Look at a boxplot of TB notifications by country for the 10 countries with the greatest # of notifications overall.
+    + Hint: `group_by()` countries, then sum all notifications, then sort 
+    in descending order with `?arrange`
+
+## Answers 1
+
+1. Write code that spreads `notif3` so that each country has it's own column
+
+## Answers 2
+
+2. Look at a boxplot of TB notifications by country for the 10 countries with the greatest # of cumulative notifications across years.
+
+## Answers 2
+
+2. Look at a boxplot of TB notifications by country for the 10 countries with the greatest # of cumulative notifications across years.
+
+## Answers 2 (with ggplot)
+
+2. Look at a boxplot of TB notifications by country for the 10 countries with the greatest # of cumulative notifications across years.
+
+
+## Excercise 3
+
+* [WHO Measles & Rubella Page](http://www.who.int/immunization/monitoring_surveillance/burden/vpd/surveillance_type/active/measles_monthlydata/en/)
+* Download the [Distribution of measles cases by country and by month, 2011-2017](http://www.who.int/entity/immunization/monitoring_surveillance/burden/vpd/Table_407_Web_Number_Measles_Cases_Month_2017-08-09.xlsx?ua=1)
+* Read it into R with the  `xlsx` library (note you have to read 2nd sheet!)
+* Reformat the data so it is in long with date in YYYY-MM format
+
+## Answer 3
+
+## Excercise 4
+
+* Plot measles incidence time series by country for the 5 highest incidence countries in 2015
+
+## Export Rmd to R
+
+* You can extract the inside of code chunks using `purl()`
+

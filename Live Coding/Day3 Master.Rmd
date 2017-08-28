@@ -1,0 +1,213 @@
+---
+title: "Reproducible Data Cleaning in RMarkdown"
+subtitle: EPID 7500 - Introduction to Coding in R for Public Health & the Life Sciences
+author: Steve Bellan
+date: August 28, 2017
+output: slidy_presentation 
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load the necessary packages
+
+Note that to enter a code segment we can do `Ctrl-Alt-i` (Windows) or  `Cmd-Alt-i` (Mac)
+```{r message=F}
+require(tidyverse)
+```
+
+## Knitting
+
+* Use keyboard shortcuts to knit whenever you want
+* `Ctrl-Shift-k` (Windows) or `Cmd-Shift-k` (Mac)
+
+## Loading in a data set from the internet
+
+* [WHO TB notification data provided by countries](http://www.who.int/tb/country/data/download/en/)
+* Right click on `Download case notifications [1.9Mb]` and save it to your hard drive
+* Cannot load directly from internet since no URL for the CSV file available
+* [WHO Data Dictionary](https://extranet.who.int/tme/generateCSV.asp?ds=dictionary)
+
+```{r message=F, results='hide'}
+notif <- read_csv('~/Downloads/TB_notifications_2017-08-27.csv')
+```
+```{r message=F}
+head(colnames(notif),20)
+notif[1:4,1:5]
+```
+
+## Workflow for running R code within Rmd
+
+* I prefer to be able to use Console
+* Set R output to console (not inline) when running lines [see here](https://support.rstudio.com/hc/en-us/community/posts/115000797947-Global-Changes-show-chunk-output-in-console-not-execute-all-lines)
+
+## Select just a few variables of interest
+
+```{r selectCols}
+notif2 <- select(notif, iso3, country, g_whoregion, year, c_newinc) %>% 
+  rename(whoreg = g_whoregion, inc = c_newinc)
+notif2
+head(distinct(notif2, country) %>% .$country)
+```
+
+## Missing values
+
+```{r incNA}
+indNA <- which(is.na(notif2$inc))
+head(indNA)
+slice(notif2, indNA)
+```
+
+* Excercise: Repeat this but look at rows with 0 values
+```{r incZ, echo=F}
+ind0 <- which(notif2$inc==0)
+head(ind0)
+slice(notif2, ind0)
+```
+
+## Identify countries without missing rows
+
+* `sum(is.na(x))` tells you how many NAs are in x
+* `sum(is.na(x))==0` tells you there are no NAs in x
+
+```{r}
+sum(is.na(c(0,NA,3,NA,5)))
+```
+
+```{r fullcountry}
+fullcountry <- 
+  group_by(notif2, country) %>%
+  summarize(noNAs = sum(is.na(inc))==0) %>%
+  filter(noNAs==T) %>%
+  .$country
+head(fullcountry)
+```
+
+## Subsetting
+
+* Select the data set for which there are no NAs
+
+```{r fullcountryDat}
+notif3 <- filter(notif2, country %in% fullcountry)
+range(notif3$inc)
+sum(is.na(notif3$inc))
+glimpse(notif3)
+summary(notif3)
+```
+
+## Excercises
+
+1. Write code that spreads `notif3` so that each country has it's own column
+1. Look at a boxplot of TB notifications by country for the 10 countries with the greatest # of notifications overall.
+    + Hint: `group_by()` countries, then sum all notifications, then sort 
+    in descending order with `?arrange`
+
+## Answers 1
+
+1. Write code that spreads `notif3` so that each country has it's own column
+```{r spread, echo=FALSE}
+args(spread)
+head(notif3)
+notifWide <- select(notif3, country, year, inc) %>%
+  spread(country, inc)
+notifWide[1:5,1:5]
+filter(notif3, country=='Argentina')
+```
+
+## Answers 2
+
+2. Look at a boxplot of TB notifications by country for the 10 countries with the greatest # of cumulative notifications across years.
+
+```{r bigC}
+big_countries <- 
+  group_by(notif3, country) %>%
+  summarize(cum_inc= sum(inc)) %>%
+  arrange(desc(cum_inc)) %>% 
+  slice(1:10) %>%
+  .$country
+big_countries
+```
+
+## Answers 2
+
+2. Look at a boxplot of TB notifications by country for the 10 countries with the greatest # of cumulative notifications across years.
+
+```{r boxplot, echo=FALSE}
+big_countries
+boxplot(inc ~ iso3, filter(notif3, country %in% big_countries) , las = 2)
+```
+
+## Answers 2 (with ggplot)
+
+2. Look at a boxplot of TB notifications by country for the 10 countries with the greatest # of cumulative notifications across years.
+
+```{r boxplotGG, echo=FALSE}
+big_countries
+filter(notif3, country %in% big_countries) %>% 
+  ggplot(., aes(iso3, inc)) + geom_boxplot() + 
+  ## the next line rotates the country labels 90 degrees
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) 
+```
+
+## Excercise 3
+
+* [WHO Measles & Rubella Page](http://www.who.int/immunization/monitoring_surveillance/burden/vpd/surveillance_type/active/measles_monthlydata/en/)
+* Download the [Distribution of measles cases by country and by month, 2011-2017](http://www.who.int/entity/immunization/monitoring_surveillance/burden/vpd/Table_407_Web_Number_Measles_Cases_Month_2017-08-09.xlsx?ua=1)
+* Read it into R with the  `xlsx` library (note you have to read 2nd sheet!)
+* Reformat the data so it is in long with date in YYYY-MM format
+
+## Answer 3
+
+```{r measlesDat1}
+## load the necessary libraries
+require(readxl); require(tidyverse); require(lubridate); require(stringr)
+getwd()
+meas <- read_xlsx('Table_407_Web_Number_Measles_Cases_Month_2017-08-09.xlsx', sheet = 2)
+head(meas)
+?gather
+## gather everything but iso3, countyr, year and make value of column name
+meas2 <- gather(meas, month, cases, -c(ISO3, Country, Year) )
+## change class of month to a factor, and use month.name as ordered.level
+month.name
+meas2$month <- factor(meas2$month, ordered = T, levels = month.name)
+meas2$monthNum <- as.numeric(meas2$month)
+meas2$monthNum <- str_pad(meas2$monthNum, width = 2, side = 'left', pad=0)
+meas2
+```
+
+```{r measlesDat2}
+## double check that the number months match the name months
+distinct(meas2, month, monthNum) ## look at every distinct entry by monthXmonthNum
+filter(meas2, monthNum==5) ## look at a random month num
+meas3 <- ## unite year & month columns
+  unite(meas2, ym, Year, monthNum, sep='-') %>%
+  select(-month) %>% ## remove the month column which is no longer necessary
+  rename(date=ym) %>% ## rename the ym column
+  mutate(date = ymd(date))
+meas3
+```
+
+## Excercise 4
+
+* Plot measles incidence time series by country for the 5 highest incidence countries in 2015
+```{r plotMeas}
+require(lubridate)
+
+group_by(meas3, country) >%>
+  filter(ym())
+  summarise(sum)
+
+```
+
+
+## Export Rmd to R
+
+* You can extract the inside of code chunks using `purl()`
+
+```{r}
+require(knitr)
+purl('Day3.Rmd')
+```
+
