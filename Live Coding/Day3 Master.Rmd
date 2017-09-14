@@ -164,6 +164,7 @@ filter(notif3, country %in% big_countries) %>%
 ## load the necessary libraries
 require(readxl); require(tidyverse); require(lubridate); require(stringr)
 getwd()
+setwd("~/Documents/R Repos/EPID7500/Live Coding")
 meas <- read_xlsx('Table_407_Web_Number_Measles_Cases_Month_2017-08-09.xlsx', sheet = 2)
 head(meas)
 ?gather
@@ -181,25 +182,18 @@ meas2
 ## double check that the number months match the name months
 distinct(meas2, month, monthNum) ## look at every distinct entry by monthXmonthNum
 filter(meas2, monthNum==5) ## look at a random month num
+
 meas3 <- ## unite year & month columns
   unite(meas2, ym, Year, monthNum, sep='-') %>%
-  select(-month) %>% ## remove the month column which is no longer necessary
-  rename(date=ym) %>% ## rename the ym column
-  mutate(date = ymd(date))
+  mutate(date = paste0(ym, '-01')) %>% ## add day
+  mutate(date = ymd(date)) %>%
+  select(-month)
 meas3
 ```
 
 ## Excercise 4
 
 * Plot measles incidence time series by country for the 5 highest incidence countries in 2015
-```{r plotMeas}
-require(lubridate)
-
-group_by(meas3, country) >%>
-  filter(ym())
-  summarise(sum)
-
-```
 
 
 ## Export Rmd to R

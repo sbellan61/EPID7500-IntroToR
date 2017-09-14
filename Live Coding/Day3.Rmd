@@ -11,10 +11,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Load the necessary packages
 
-Note that to enter a code segment we can do `Ctrl-Alt-i` (Windows) or  `Cmd-Alt-i` (Mac)
 ```{r message=F}
 require(tidyverse)
 ```
+Note that to enter a code segment we can do `Ctrl-Alt-i` (Windows) or  `Cmd-Alt-i` (Mac)
 
 ## Knitting
 
@@ -27,6 +27,15 @@ require(tidyverse)
 * Right click on `Download case notifications [1.9Mb]` and save it to your hard drive
 * Cannot load directly from internet since no URL for the CSV file available
 * [WHO Data Dictionary](https://extranet.who.int/tme/generateCSV.asp?ds=dictionary)
+
+```{r}
+setwd("~/Documents/R Repos/EPID7500/Live Coding")
+dir()
+notif <- read_csv('TB_notifications_2017-08-27.csv')
+## head(notif)
+notif[1:5,1:5]
+```
+
 
 
 ## Workflow for running R code within Rmd
