@@ -80,6 +80,27 @@ if(browse) browser()
 ####################################################################################################
 ## Risk Ratios
 ####################################################################################################
+## As you have learned or will be learning in your introductor epi
+## class, a common way to measure an effect of a risk ractor is with a
+## risk ratio. In our simulated study, we don't have any real notion
+## of time (just lifetimes). So our measure of cancer is prevalence.
+
+mean(myStudy$cancer) ## prevalence of cancer
+
+## We can measure prevalence in both the smoking & non-smoking groups
+prevXsmoker <- group_by(myStudy, smoker) %>%
+    summarize(prevalence = mean(cancer))
+prevXsmoker
+
+## And we can calculate a prevalence ratio of smoker vs non-smoker
+
+prevRatioSmoking <- summarize(prevXsmoker, prevRatioSmoking = prevalence[smoker==T] / prevalence[smoker==F]) %>%
+    .$prevRatioSmoking
+prevRatioSmoking
+
+## 4A Create a function that takes the output of your study simulator
+## and calculates this prevalence ratio
+
 
 
 ####################################################################################################
@@ -99,20 +120,34 @@ if(browse) browser()
 ## We can resample our data in a way such that the null hypothesis IS
 ## TRUE in the resampled data. All we neeed to do, is to jumble up the
 ## smoker variable, while keeping the cancer column the same:
-myStudy %>%
-    mutate(smokerJumbled = sample(smoker, size = n(), replace=FALSE))
-myStudy
 
-## 4A Use the correlation function to
+myStudyJumbled <- myStudy %>%
+    mutate(smoker = sample(smoker, size = n(), replace=FALSE))
+myStudyJumbled
 
-## Things they learned:
+## 5A Use your function from 4 above to calculate the prevalence ratio
+## for data with smoker jumbled.
 
-## lists vs vectors vs df/tibbles
+## 5B Write a for() loop that repeats this 10 times (jumble, calculate
+## prevalence ratio, store prevalence ratio in a vector).
 
-## functions, printing
+## *Hint*: Here's some example code that shows how you can use a for()
+## loop to fill a vector
 
-## control flow
+runs <- 10
+vectorToFill <- as.numeric() ## initiate an empty vector that's of class numeric
+for(i in 1:runs) {
+## append something to the vector (starts out empty then gets filled up one at a time)
+    vectorToFill <- c(vectorToFill, i*2 + 10) 
+}
+vectorToFill
 
-## apply family
+## 5C Now do it 1000 times. Plot a histogram of these prevalence
+## ratios from the jumbled data using ggplot() + geom_histogram()
 
-## date/time formats
+## 5D add a vertical red line for where the prevalence ratio from the
+## true data lies.
+
+## 5E Interpret this plot, what does it tell you?
+
+## 5F Repeat 5C-D above for a simulated study sample size of 100. What is the difference?
