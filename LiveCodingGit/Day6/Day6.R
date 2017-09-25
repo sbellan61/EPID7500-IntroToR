@@ -57,7 +57,7 @@ xtabs(~smoker + cancer + sex, myStudy)
 ##    if TRUE, prints the crosstabulation of smoker X cancer.
 
 ## 2C Run the function for sampSize of 10, 20, 30, 100, and 1000 using
-## sapply(), printing the cross tbulation
+## sapply(), printing the cross tabulation using the argument from 2B
 
 ####################################################################################################
 ## Debugging
@@ -66,12 +66,17 @@ xtabs(~smoker + cancer + sex, myStudy)
 ?browser
 ?debug
 
+## Rstudio also has built in debugger capabilities
+## https://support.rstudio.com/hc/en-us/articles/200713843?version=1.0.153&mode=desktop#stopping-on-a-line
+
 ## 3A Call debug() on the name of your function and then run your
 ## function again, using R's debugger to step through it and explore
 ## objects as you go.
 
 ## 3B Add the following line to the top of your function
-if(browse) browser()
+
+## if(browse) browser()
+
 ## And add the argument browse with a default of FALSE to your
 ## function's arguments. Then run your function once with the default
 ## for browse, and once with browse=T.
