@@ -67,7 +67,7 @@ CalcPrevRatio(data=myStudy, browse=F) ## analyze
 permuteStat <- function(data, statFun=CalcPrevRatio, permutations = 999, 
                         showHist=T, updateFreq = 200, browse=F) {
     if(browse) browser()
-    actualPrevRatio <- CalcPrevRatio(myStudy)
+    actualPrevRatio <- CalcPrevRatio(data)
     message('study statistic is ', signif(actualPrevRatio,3))
     output <- vector('double', permutations)
     for(i in seq_along(output)) {
@@ -90,41 +90,76 @@ permuteStat <- function(data, statFun=CalcPrevRatio, permutations = 999,
 }
 
 myStudy <- createMyStudy(sampSize=300, printXtabs=T)
-permutationTestResults <- permuteStat(myStudy) ##, permutations=1, browse=F)
+args(permuteStat)
+permutationTestResults <- permuteStat(myStudy,  permutations=1, browse=T)
 
-calcPvalue <- function(allVals) {
+permutationTestResults <- permuteStat(myStudy,  permutations=999, browse=F)
+
+calcPvalue <- function(allVals, browse=F) {
+  if(browse) browser()
     upperTail <- allVals %>% summarize(mean(prevRatio >= prevRatio[!randomized]))
     lowerTail <- allVals %>% summarize(mean(prevRatio <= prevRatio[!randomized]))
     min(upperTail, lowerTail)
 }
+calcPvalue(permutationTestResults, browse=T)
 calcPvalue(permutationTestResults)
-
 
 ####################################################################################################
 ## 1. What is the true prevalence ratio amongst men and women?
+lifetimeLungCancerRisk %>% summarise(truePrevRatio = mean(risk[smoker==T]) / mean(risk[smoker==F]))
+mean(lifetimeLungCancerRisk$risk[lifetimeLungCancerRisk$smoker==T]) / mean(lifetimeLungCancerRisk$risk[lifetimeLungCancerRisk$smoker==F])  
+## with(lifetimeLungCancerRisk, mean(risk[smoker==T)]) / mean(risk[smoker==F]))
+
 
 ####################################################################################################
 ## 2. Create a new table where the risk ratio is only 1.5
+lifetimeLungCancerRisk
+lifetimeLungCancerRisk1.5 <- lifetimeLungCancerRisk %>% 
+  group_by(sex) %>%
+  mutate(risk = replace(risk, smoker==F, risk[smoker!=F]/1.5 ))
+lifetimeLungCancerRisk
+lifetimeLungCancerRisk1.5
 
+lifetimeLungCancerRisk1.5 %>% summarise(truePrevRatio = mean(risk[smoker==T]) / mean(risk[smoker==F]))
 ## 3. Run the study simulator with this risk
+
+myStudy1.5 <- createMyStudy(sampSize = 1000, printXtabs = T, groupRisks = lifetimeLungCancerRisk1.5)
+CalcPrevRatio(myStudy1.5)
+permutationTestResults1.5 <- permuteStat(myStudy1.5)
+calcPvalue(permutationTestResults1.5)
 
 ####################################################################################################
 ## 4. Power calculation: If your sample size is 200, what is the probability that your study would be
 ## able to detect that smoking had a statistically significant effect on cancer (P > .05)?
 
+lifetimeLungCancerRisk1.5
+runs <- 1000
+pValues <- rep(NA, runs)
+for(i in seq_along(pValues)) {
+  message(i)
+  myStudy1.5 <- createMyStudy(sampSize = 200, printXtabs = F, groupRisks = lifetimeLungCancerRisk1.5)
+  ## permutationTestResults1.5 <- permuteStat(myStudy1.5, updateFreq = 500, permutations = 99)
+  ## pValues[i] <- calcPvalue(permutationTestResults1.5)
+  myModel1.5 <- glm(cancer ~ smoker, data = myStudy1.5, family = binomial('logit'))
+  pValues[i] <- coef(summary(myModel1.5))['smokerTRUE',4] ## p value on smoking
+}
+hist(pValues, breaks=100)
+mean(pValues <= .05)
+
 ## 5. In your own words define a p Value
+
 
 ## Read more about permutation tests: https://en.wikipedia.org/wiki/Resampling_(statistics)#Permutation_tests
 
 ## 6. Logistic regression is another common way to evaluate binary outcomes
-myModel <- glm(cancer ~ smoker, family=binomial(link='logit'), data=myStudy)
-summary(myModel) ## summary of results
+myModel1.5 <- glm(cancer ~ smoker, family=binomial(link='logit'), data=myStudy1.5)
+summary(myModel1.5) ## summary of results
 
-coef(myModel) ## just coefficients
-confint(myModel) ## confidence intervals around them
+coef(myModel1.5) ## just coefficients
+confint(myModel1.5) ## confidence intervals around them
 
-exp(coef(myModel))['smokerTRUE'] ## the odds ratio between smokers and non-smokers
-exp(confint(myModel))['smokerTRUE',] ## the confidence interval around that odds ratio
+exp(coef(myModel1.5))['smokerTRUE'] ## the odds ratio between smokers and non-smokers
+exp(confint(myModel1.5))['smokerTRUE',] ## the confidence interval around that odds ratio
 
 coef(summary(myModel)) ## model coefficients and statistics
 coef(summary(myModel))['smokerTRUE',4] ## p value on smoking
@@ -148,6 +183,8 @@ samp <- rnorm(1000, mean=0, sd=1)
 hist(samp)
 hist(samp, breaks = 100)
 
+##
+
 ####################################################################################################
 ## Confidence Intervals
 ####################################################################################################
@@ -157,7 +194,7 @@ hist(samp, breaks = 100)
 ## in a child's height over time
 
 ## https://www.ncbi.nlm.nih.gov/pubmed/10648265
-createWeightStudy <- function(sampSize=1000, printXtabs=F, meanHeights, browse=F) {
+createHeightStudy <- function(sampSize=1000, printXtabs=F, meanHeights, browse=F) {
     if(browse) browser()
     myStudy <- select(bnames, name, sex) %>% 
         slice(sample(1:n(), sampSize, replace=F)) ## randomly select sampSize rows
@@ -168,8 +205,17 @@ createWeightStudy <- function(sampSize=1000, printXtabs=F, meanHeights, browse=F
     return(myStudy)
 }
 
-wtDat <- createWeightStudy()
-ggplot(wtDat, aes(height, fill=vitaminA)) + geom_histogram(position='dodge')
+htDat <- createHeightStudy()
+htDat
+ggplot(htDat, aes(height, fill=vitaminA)) + geom_histogram(position='dodge', bins=60)
 
+## 1. Create a function that calculates a difference in heights from your data
 
+## 2. Use the t.test function to compare heights between the two groups
+tresult <- t.test(filter(htDat, vitaminA==T) %>% .$height,
+       filter(htDat, vitaminA==F) %>% .$height)
+tresult
+names(tresult)
+tresult$p.value
+tresult$conf.int
 
