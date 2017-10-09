@@ -287,3 +287,51 @@ ciMaker <- function(sampSize, sampMean, sampSD, runs) {
 ## size by populating the below tibble by calling your function inside of a for() loop
 coverageDat <- tibble(sampSizes = c(2,5,10,50,100), coverageT = 0, coverageNorm = 0)
 coverageDat
+
+
+ciMaker <- function(sampSize, sampMean, sampSD, runs, type='t', facet=F, plot=T, alpha = .05, browse=F) {
+    output <- tibble(lower = numeric(runs), mean = numeric(runs), upper = numeric(runs))
+    for(i in 1:runs) {
+        samp <- rnorm(sampSize, sampMean, sampSD)
+        qs <- c(alpha/2, .5, 1-alpha/2)
+        if(type=='t') quants <- qt(qs, df = sampSize)
+        if(type=='normal') quants <- qnorm(qs)
+        output[i,c('lower', 'mean', 'upper')] <- mean(samp) + quants*sd(samp)/sqrt(sampSize)
+        output[i,'t'] <- (mean(samp) - sampMean) / (sd(samp)/sqrt(sampSize))
+    }
+    output$meanCaptured <- sampMean >= output$lower & sampMean <= output$upper
+    if(browse) browser()
+    output$p <- pt(-abs(output$t), df = sampSize)
+    ci_coverage <- mean(output$meanCaptured)*100
+    output$run <- 1:runs
+    if(plot) {
+        p1 <- ggplot(output, aes(run, mean, lower, upper, col = meanCaptured), alpha = .5) +
+            geom_point(aes(run, mean), shape = 1, size = 4) +
+            geom_errorbar(aes(ymin = lower, ymax = upper)) +
+            scale_color_manual(values=c('TRUE'='dark green','FALSE'='red')) +
+            geom_hline(yintercept = sampMean, col = 'blue', lwd = 2) +
+            ggtitle(paste0(ci_coverage, '% of ', alpha, '% CIs encompass true mean'))
+        if(facet) print(p1 + facet_wrap(~meanCaptured)) else
+                                                            print(p1)
+    }
+    return(list(output=output, ci_coverage=ci_coverage))
+}
+
+ciMaker(20, 3, 2, runs=1000, facet=T, alph = .7)
+
+mu <- 3
+sigma <- 2
+runs <- 1000
+for(i in 1:nrow(coverageDat)) {
+    coverageDat[i, 'coverageT'] <- ciMaker(sampSize = coverageDat$sampSizes[i], sampMean=mu,
+                                           sampSD = 2, runs = runs, type='t', plot=F)$ci_coverage
+    coverageDat[i, 'coverageNorm'] <- ciMaker(sampSize = coverageDat$sampSizes[i], sampMean=mu,
+                                              sampSD = 2, runs = runs, type='normal', plot=F)$ci_coverage
+}
+coverageDat
+
+coverageDat_long <- gather(coverageDat, key =distribution, value = coverage, -sampSizes)
+
+ggplot(coverageDat_long, aes(sampSizes, coverage, col=distribution)) +
+    geom_line() +
+    geom_hline(yintercept = 95, lty=2)
