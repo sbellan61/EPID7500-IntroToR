@@ -12,30 +12,9 @@ require(tidyverse)
 ## Simulating logistic regression
 ####################################################################################################
 
-## Last week we looked at how to take a mean of a normal sample. What if we have two variables, one
-## of which is normally distributed?There are many different ways this could happen. Our outcome
-## variable might be continuous and normally distributed, or our independent variable might be
-## normal and continuously distributed, or both might be continuous, but one might be normally
-## distributed another might be distributed in a different way according to another probability
-## distribution. In general we take our independent variable's probability distribution for granted
-## in analysis. I.e. we assume that we are looking at the distribution of outcome variables
-## conditional on the observations of the independent variable, but don't think about the fact that
-## the independent variables are coming from a probability distribution itself that is reflective of
-## the population we are interested in.
-
-## However, when we simulate data, we always need to think about what a probability distribution is
-## underlying any data that we simulate because that is how we generate it via simulation. For
-## instance, if we were simulating randomized controlled trial in which people are assigned an
-## exposure variable (such as vitamin supplementation), we may say that the distribution of this
-## variable is that everyone has a 50% chance of getting supplementation. however, we are thinking
-## about an independent variable that is not assigned via study design, then we need to think about
-## what type of distribution of this variable might exist in the population. Many variables tend to
-## look normally distributed, but sometimes they are different patterns such as bimodal patterns.
-## For now, we will stick to simple distribution such as the normal distribution or the uniform
-## distribution.
-
 ##  Imagine we are considering an observational study of how body mass index (BMI) affects risk of
-##  active tuberculosis (TB). How might we simulate BMI?  well what does the distribution of BMI actually look like in a real population? Here's an example from a German study:
+##  active tuberculosis (TB). How might we simulate BMI?  well what does the distribution of BMI
+##  actually look like in a real population? Here's an example from a German study:
 
 ## https://openi.nlm.nih.gov/detailedresult.php?img=PMC3022146_404_2009_1349_Fig1_HTML&req=4
 
